@@ -1,0 +1,13 @@
+app/code/local/Wyomind/Datafeedmanager  app/code/local/Wyomind/Datafeedmanager
+app/code/local/Wyomind/Licensemanager   app/code/local/Wyomind/Licensemanager
+app/code/local/Wyomind/Notificationmanager  app/code/local/Wyomind/Notificationmanager
+app/design/adminhtml/default/default/layout/datafeedmanager.xml app/design/adminhtml/default/default/layout/datafeedmanager.xml
+app/design/adminhtml/default/default/layout/licensemanager.xml  app/design/adminhtml/default/default/layout/licensemanager.xml
+app/design/adminhtml/default/default/template/datafeedmanager   app/design/adminhtml/default/default/template/datafeedmanager
+app/etc/modules/*.xml   app/etc/modules/
+feeds/sample.xml   feeds/sample.xml
+lib/Wyomind/Google_Taxonomy.txt lib/Wyomind/Google_Taxonomy.txt
+shell/wyomind_datafeedmanager.php   shell/wyomind_datafeedmanager.php
+skin/adminhtml/default/default/CodeMirror2  skin/adminhtml/default/default/CodeMirror2
+skin/adminhtml/default/default/datafeedmanager  skin/adminhtml/default/default/datafeedmanager
+var/tmp/dfm/dfl_1.flag  var/tmp/dfm/dfl_1.flag
