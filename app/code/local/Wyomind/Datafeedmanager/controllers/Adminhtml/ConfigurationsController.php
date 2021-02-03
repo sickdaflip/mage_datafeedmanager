@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © 2018 Wyomind. All rights reserved.
  * See LICENSE.txt for license details.
@@ -8,8 +9,8 @@ class Wyomind_Datafeedmanager_Adminhtml_ConfigurationsController extends Mage_Ad
     protected function _initAction()
     {
         $this->loadLayout()
-                ->_setActiveMenu('catalog/datafeedmanager')
-                ->_addBreadcrumb($this->__('Data feed Manager'), ('Data feed Manager'));
+            ->_setActiveMenu('catalog/datafeedmanager')
+            ->_addBreadcrumb($this->__('Data feed Manager'), ('Data feed Manager'));
 
         return $this;
     }
@@ -47,9 +48,9 @@ class Wyomind_Datafeedmanager_Adminhtml_ConfigurationsController extends Mage_Ad
 
             $this->_addContent(
                 $this->getLayout()
-                ->createBlock('datafeedmanager/adminhtml_configurations_edit')
+                    ->createBlock('datafeedmanager/adminhtml_configurations_edit')
             )
-                    ->_addLeft($this->getLayout()->createBlock('datafeedmanager/adminhtml_configurations_edit_tabs'));
+                ->_addLeft($this->getLayout()->createBlock('datafeedmanager/adminhtml_configurations_edit_tabs'));
 
             $this->renderLayout();
         } else {
@@ -96,7 +97,7 @@ class Wyomind_Datafeedmanager_Adminhtml_ConfigurationsController extends Mage_Ad
                     $this->_forward('generate');
                     return;
                 }
-                
+
                 $this->_redirect('*/*/');
                 return;
             } catch (Exception $e) {
@@ -124,11 +125,11 @@ class Wyomind_Datafeedmanager_Adminhtml_ConfigurationsController extends Mage_Ad
                 $io = new Varien_Io_File();
                 $fileName = $model->getPreparedFilename();
                 $filePath = $io->getCleanPath(BP . DS . $fileName);
-                
+
                 if ($io->fileExists($filePath)) {
                     $io->rm($filePath);
                 }
-                
+
                 $model->delete();
 
                 Mage::getSingleton('adminhtml/session')->addSuccess(
@@ -204,27 +205,27 @@ class Wyomind_Datafeedmanager_Adminhtml_ConfigurationsController extends Mage_Ad
                 $filename = $file['tmp_name'];
                 $info = pathinfo($filename);
                 $fileSize = $file['size'];
-                
+
                 $io = new Varien_Io_File();
                 $io->open(array('path' => $info['dirname']));
                 $io->streamOpen($filename, 'r');
                 $fileContent = $io->streamRead($fileSize);
-                
+
                 if (Mage::getStoreConfig('datafeedmanager/system/trans_domain_export')) {
                     $key = 'dfm-empty-key';
                 } else {
                     $key = Mage::getStoreConfig('datafeedmanager/license/activation_code');
                 }
-                
+
                 $template = rtrim(
                     mcrypt_decrypt(
-                        MCRYPT_RIJNDAEL_256, 
-                        md5($key), 
-                        base64_decode($fileContent), 
+                        MCRYPT_RIJNDAEL_256,
+                        md5($key),
+                        base64_decode($fileContent),
                         MCRYPT_MODE_CBC, md5(md5($key))
                     ), "\0"
                 );
-                
+
                 $io->streamClose();
 
                 Mage::getResourceModel('datafeedmanager/datafeedmanager')->importConfiguration($template);
@@ -235,8 +236,8 @@ class Wyomind_Datafeedmanager_Adminhtml_ConfigurationsController extends Mage_Ad
         $this->_setActiveMenu('datafeedmanager/configurations');
 
         $this->_addContent($this->getLayout()->createBlock('datafeedmanager/adminhtml_import'))
-                ->_addLeft($this->getLayout()->createBlock('datafeedmanager/adminhtml_import_edit_tabs'));
-        
+            ->_addLeft($this->getLayout()->createBlock('datafeedmanager/adminhtml_import_edit_tabs'));
+
         $this->renderLayout();
     }
 
@@ -246,11 +247,11 @@ class Wyomind_Datafeedmanager_Adminhtml_ConfigurationsController extends Mage_Ad
         $feed = Mage::getModel('datafeedmanager/configurations')->load($id);
 
         $this->getResponse()
-                ->setHttpResponseCode(200)
-                ->setHeader('Pragma', 'public', true)
-                ->setHeader('Cache-Control', 'must-revalidate, post-check=0, pre-check=0', true)
-                ->setHeader('Content-type', 'application/force-download')
-                ->setHeader('Content-Disposition', 'inline' . '; filename=' . $feed->getFeedName() . ".dfm");
+            ->setHttpResponseCode(200)
+            ->setHeader('Pragma', 'public', true)
+            ->setHeader('Cache-Control', 'must-revalidate, post-check=0, pre-check=0', true)
+            ->setHeader('Content-type', 'application/force-download')
+            ->setHeader('Content-Disposition', 'inline' . '; filename=' . $feed->getFeedName() . ".dfm");
         $this->getResponse()->clearBody();
         $this->getResponse()->sendHeaders();
 
@@ -263,15 +264,16 @@ class Wyomind_Datafeedmanager_Adminhtml_ConfigurationsController extends Mage_Ad
             }
         }
         $sql = "INSERT INTO {{datafeedmanager_configurations}}(" . implode(',', $fields) . ") "
-                . "VALUES (" . implode(',', $values) . ");";
+            . "VALUES (" . implode(',', $values) . ");";
         if (Mage::getStoreConfig('datafeedmanager/system/trans_domain_export')) {
             $key = "dfm-empty-key";
         } else {
             $key = Mage::getStoreConfig('datafeedmanager/license/activation_code');
         }
-        
+        $sql = utf8_encode($sql);
+
         $body = base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256, md5($key), $sql, MCRYPT_MODE_CBC, md5(md5($key))));
-        
+
         $this->getResponse()->setBody($body);
     }
 
@@ -308,7 +310,7 @@ class Wyomind_Datafeedmanager_Adminhtml_ConfigurationsController extends Mage_Ad
                 $datafeedmanager->generateFile();
                 $timeEnd = Mage::getSingleton('core/date')->gmtTimestamp();
                 $time = $timeEnd - $timeStart;
-                
+
                 if ($time < 60) {
                     $time = ceil($time) . ' sec. ';
                 } else {
@@ -316,20 +318,20 @@ class Wyomind_Datafeedmanager_Adminhtml_ConfigurationsController extends Mage_Ad
                 }
 
                 $unit = array('b', 'Kb', 'Mb', 'Gb', 'Tb', 'Pb');
-                
+
                 $memory = 0;
                 $exponential = pow(1024, ($i = floor(log(memory_get_usage(), 1024))));
-                
+
                 if ($exponential !== 0) {
                     $memory = round(memory_get_usage() / $exponential, 2);
                 }
-                
+
                 $memory .= ' ' . $unit[$i];
 
                 $fileName = preg_replace('/^\//', '', $datafeedmanager->getFeed_path() . $datafeedmanager->_filename);
                 $types = array(1 => 'xml', 2 => 'txt', 3 => 'csv', 4 => 'tsv');
                 $ext = $types[$datafeedmanager->getFeed_type()];
-                
+
                 $url = (Mage::app()->getStore($datafeedmanager->getStoreId())
                         ->getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB) . $fileName);
                 $report = "
@@ -348,7 +350,7 @@ class Wyomind_Datafeedmanager_Adminhtml_ConfigurationsController extends Mage_Ad
                         'The data feed "%s" has been generated.', $datafeedmanager->getFeedName() . '.' . $ext
                     )
                 );
-                
+
                 $this->_getSession()->addSuccess($report);
 
                 if ($this->getRequest()->getParam('generate')) {

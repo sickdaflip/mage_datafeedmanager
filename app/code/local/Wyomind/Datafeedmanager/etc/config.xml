@@ -6,14 +6,14 @@ See LICENSE.txt for license details.
 <config>
     <modules>
         <Wyomind_Datafeedmanager>
-            <version>7.14.0.5</version>
+            <version>7.14.5</version>
         </Wyomind_Datafeedmanager>
     </modules>
     <default>
         <datafeedmanager>
             <license> 
                 <label>Data Feed Manager</label>
-                <version>7.14.0.5</version>
+                <version>7.14.5</version>
                 <extension_code>dfm</extension_code>
                 <get_online_license>1</get_online_license>
             <activation_key>6D60KUMFNMZ37ZMGV</activation_key></license>

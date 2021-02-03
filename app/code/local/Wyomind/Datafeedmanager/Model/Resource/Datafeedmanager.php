@@ -36,8 +36,9 @@ class Wyomind_Datafeedmanager_Model_Resource_Datafeedmanager extends Mage_Core_M
         $resource = Mage::getSingleton('core/resource');
         $writeConnection = $resource->getConnection('core_write');
         $dfmc = $resource->getTableName('datafeedmanager_configurations');
-        $sql = str_replace(array('{{datafeedmanager_configurations}}', '"', "\\'"), array($dfmc, '\\"', "'"), $template);
-
+        $sql = str_replace(array('{{datafeedmanager_configurations}}', '"'), array($dfmc, '\\"'), $template);
+        // old code: $sql = str_replace(array('{{datafeedmanager_configurations}}', '"', "\\'"), array($dfmc, '\\"', "'"), $template);
+        // the replacement of \' with ' has been removed because of SQL errors for the profile's escape character (\)
         try {
             $writeConnection->query($sql);
             Mage::getSingleton('adminhtml/session')->addSuccess(
